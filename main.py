@@ -10,15 +10,20 @@ cursor.execute('''
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         prefixo TEXT NOT NULL,
         descricao TEXT NOT NULL,
-        data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        data TEXT NOT NULL,
+        status TEXT NOT NULL
     )
 ''')
 
 def registrar_manutencao():
     prefixo = input("Digite o prefixo da aeronave (Ex: PT-XYZ): ")
-    servico = input("Descrição do serviço realizado: ")
+    descricao = input("Descrição do serviço realizado: ")
+    data = "19/01/2026"
+    status = input("Status (ex: Pronto para Voo / Em Manutenção): ")
     
-    cursor.execute("INSERT INTO logs (prefixo, descricao) VALUES (?, ?)", (prefixo, servico))
+    cursor = conexao.cursor()
+    
+    cursor.execute("INSERT INTO logs (prefixo, descricao, data, status) VALUES (?, ?, ?, ?)", (prefixo, descricao, data, status))
     conexao.commit()
     print("\n✅ Manutenção registrada com sucesso!\n")
 
@@ -26,8 +31,10 @@ def listar_manutencoes():
     print("\n--- HISTÓRICO DE MANUTENÇÕES ---")
     cursor.execute("SELECT * FROM logs")
     for linha in cursor.fetchall():
-        print(f"ID: {linha[0]} | Avião: {linha[1]} | Serviço: {linha[2]} | Data: {linha[3]}")
+        
+       print(f"ID: {linha[0]} | Avião: {linha[1]} | Serviço: {linha[2]} | Data: {linha[3]} | Status: {linha[4]}")
     print("---------------------------------\n")
+
 
 # 3. Menu Principal
 while True:
