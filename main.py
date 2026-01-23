@@ -1,10 +1,10 @@
 import sqlite3
 
-# 1. Conectar ao banco de dados (se não existir, ele cria o arquivo)
+# 1. Conexão ou criação do banco de dados
 conexao = sqlite3.connect('manutencao_aero.db')
 cursor = conexao.cursor()
 
-# 2. Criar a tabela de manutenções (Engenharia de Software pura!)
+# 2. Criação do banco de dados com as colunas 
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS logs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,7 +14,7 @@ cursor.execute('''
         status TEXT NOT NULL
     )
 ''')
-
+# Parte em que o usuário pode adicionar uma manutenção realizada ou pendente:
 def registrar_manutencao():
     prefixo = input("Digite o prefixo da aeronave (Ex: PT-XYZ): ")
     descricao = input("Descrição do serviço realizado: ")
@@ -27,6 +27,7 @@ def registrar_manutencao():
     conexao.commit()
     print("\n✅ Manutenção registrada com sucesso!\n")
 
+# Opção em que o usuário pode apenas ver as manutenções já registradas/ histórico
 def listar_manutencoes():
     print("\n--- HISTÓRICO DE MANUTENÇÕES ---")
     cursor.execute("SELECT * FROM logs")
@@ -36,7 +37,7 @@ def listar_manutencoes():
     print("---------------------------------\n")
 
 
-# 3. Menu Principal
+# 3. Menu Principal com as opções existentes
 while True:
     print("1. Registrar Manutenção")
     print("2. Listar Histórico")
